@@ -10,20 +10,15 @@
 
     >
 
-    <Button
+    <ImageButton
+        android:id="@+id/capture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/capture"
-        android:text="Take A Picture"
-        android:textColor="#ffffff"
-        android:textSize="26dp"
-        android:background="#83D5C4"
-        android:padding="5dp"
-        android:fontFamily="cursive"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="520dp"
+        android:contentDescription="@android:string/VideoView_error_button"
+        android:src="@drawable/camera"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
-
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/camera" />
 </androidx.constraintlayout.widget.ConstraintLayout>
