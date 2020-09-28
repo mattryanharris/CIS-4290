@@ -9,6 +9,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         classifier = new Classifier(Utils.assetFilePath(this,"mobilenet-v2.pt"));
 
-        Button capture = findViewById(R.id.capture);
+        ImageButton capture = findViewById(R.id.capture);
 
         capture.setOnClickListener(new View.OnClickListener(){
 
