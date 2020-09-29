@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import java.io.File;
 
+
+//this activity is the main
 public class MainActivity extends AppCompatActivity {
 
     int cameraRequestCode = 001;
