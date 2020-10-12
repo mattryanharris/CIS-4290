@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">PytorchAndroid</string>
+    <string name="app_name">Beoing</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="hello">Hello World, CamTestActivity!</string>
+
+    <!-- UI Elements -->
+    <string name="btn_capture">Click</string>
+
+    <!-- Toast Messages -->
+    <string name="camera_not_found">No camera harware found</string>
+    <string name="take_photo_help">Touch anywhere on screen to take picture</string>
 </resources>
