@@ -1,71 +1,249 @@
 package com.example.pytorchandroid;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.hardware.Camera;
+import android.hardware.Camera.PictureCallback;
+import android.hardware.Camera.ShutterCallback;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
+import android.view.SurfaceView;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
-//this activity is the main
-public class MainActivity extends AppCompatActivity {
-
-    int cameraRequestCode = 001;
-
-    Classifier classifier;
+public class MainActivity extends Activity {
+    private static final String TAG = "MainActivity";
+    Preview preview;
+    Button buttonClick;
+    Camera camera;
+    Activity act;
+    Context ctx;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ctx = this;
+        act = this;
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
+        preview = new Preview(this, (SurfaceView)findViewById(R.id.surfaceView));
+        preview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        ((FrameLayout) findViewById(R.id.camera)).addView(preview);
+        preview.setKeepScreenOn(true);
 
-        classifier = new Classifier(Utils.assetFilePath(this,"mobilenet-v2.pt"));
-
-        Button capture = findViewById(R.id.capture);
-
-        capture.setOnClickListener(new View.OnClickListener(){
+        preview.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View view){
-
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                startActivityForResult(cameraIntent,cameraRequestCode);
-
+            public void onClick(View arg0) {
+                camera.takePicture(shutterCallback, rawCallback, jpegCallback);
             }
-
-
         });
 
+        Toast.makeText(ctx, getString(R.string.take_photo_help), Toast.LENGTH_LONG).show();
+
+        //		buttonClick = (Button) findViewById(R.id.btnCapture);
+        //
+        //		buttonClick.setOnClickListener(new OnClickListener() {
+        //			public void onClick(View v) {
+        ////				preview.camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+        //				camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+        //			}
+        //		});
+        //
+        //		buttonClick.setOnLongClickListener(new OnLongClickListener(){
+        //			@Override
+        //			public boolean onLongClick(View arg0) {
+        //				camera.autoFocus(new AutoFocusCallback(){
+        //					@Override
+        //					public void onAutoFocus(boolean arg0, Camera arg1) {
+        //						//camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+        //					}
+        //				});
+        //				return true;
+        //			}
+        //		});
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onResume() {
+        super.onResume();
+        int numCams = Camera.getNumberOfCameras();
+        if(numCams > 0){
+            try{
+                camera = Camera.open(0);
+//                camera.setDisplayOrientation(90);
+                camera.startPreview();
+                preview.setCamera(camera);
+            } catch (RuntimeException ex){
+                Toast.makeText(ctx, getString(R.string.camera_not_found), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == cameraRequestCode && resultCode == RESULT_OK) {
+    @Override
+    protected void onPause() {
+        if(camera != null) {
+            camera.stopPreview();
+            preview.setCamera(null);
+            camera.release();
+            camera = null;
+        }
+        super.onPause();
+    }
 
-            Intent resultView = new Intent(this, Result.class);
+    private void resetCam() {
+        camera.startPreview();
+        preview.setCamera(camera);
+    }
 
-            resultView.putExtra("imagedata", data.getExtras());
+    private void refreshGallery(File file) {
+        Intent mediaScanIntent = new Intent( Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        mediaScanIntent.setData(Uri.fromFile(file));
+        sendBroadcast(mediaScanIntent);
+    }
 
-            Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+    ShutterCallback shutterCallback = new ShutterCallback() {
+        public void onShutter() {
+            //			 Log.d(TAG, "onShutter'd");
+        }
+    };
 
-            String pred = classifier.predict(imageBitmap);
-            resultView.putExtra("pred", pred);
+    PictureCallback rawCallback = new PictureCallback() {
+        public void onPictureTaken(byte[] data, Camera camera) {
+            //			 Log.d(TAG, "onPictureTaken - raw");
+        }
+    };
 
-            startActivity(resultView);
+    PictureCallback jpegCallback = new PictureCallback() {
+        public void onPictureTaken(byte[] data, Camera camera) {
+            new SaveImageTask().execute(data);
+            resetCam();
+            Log.d(TAG, "onPictureTaken - jpeg");
+        }
+    };
 
+    private class SaveImageTask extends AsyncTask<byte[], Void, Void> {
+
+        @Override
+        protected Void doInBackground(byte[]... data) {
+            FileOutputStream outStream = null;
+
+            // Write to SD Card
+            try {
+                File sdCard = Environment.getExternalStorageDirectory();
+                File dir = new File (sdCard.getAbsolutePath() + "/camtest");
+                dir.mkdirs();
+
+                String fileName = String.format("%d.jpg", System.currentTimeMillis());
+                File outFile = new File(dir, fileName);
+
+                outStream = new FileOutputStream(outFile);
+                outStream.write(data[0]);
+                outStream.flush();
+                outStream.close();
+
+                Log.d(TAG, "onPictureTaken - wrote bytes: " + data.length + " to " + outFile.getAbsolutePath());
+
+                refreshGallery(outFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+            }
+            return null;
         }
 
     }
-
 }
+
+
+//import android.content.Intent;
+//import android.graphics.Bitmap;
+//import android.os.Bundle;
+//import android.provider.MediaStore;
+//import androidx.appcompat.app.AppCompatActivity;
+//import androidx.appcompat.widget.Toolbar;
+//import android.util.Log;
+//import android.view.View;
+//import android.widget.Button;
+//import java.io.File;
+//
+//
+//
+//public class MainActivity extends AppCompatActivity {
+//
+//    int cameraRequestCode = 001;
+//
+//    Classifier classifier;
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//
+//        classifier = new Classifier(Utils.assetFilePath(this,"resnet-v2.pt"));
+//
+//        Button capture = findViewById(R.id.capture);
+//
+//        capture.setOnClickListener(new View.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View view){
+//
+//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//
+//                startActivityForResult(cameraIntent,cameraRequestCode);
+//
+//            }
+//
+//
+//        });
+//
+//    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == cameraRequestCode && resultCode == RESULT_OK) {
+//
+//            Intent resultView = new Intent(this, Result.class);
+//
+//            resultView.putExtra("imagedata", data.getExtras());
+//
+//            Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+//
+//            String pred = classifier.predict(imageBitmap);
+//            resultView.putExtra("pred", pred);
+//
+//            startActivity(resultView);
+//
+//        }
+//
+//    }
+//
+//}
