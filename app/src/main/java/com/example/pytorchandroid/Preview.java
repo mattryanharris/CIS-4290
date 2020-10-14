@@ -7,11 +7,15 @@ import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
+@SuppressWarnings("ALL")
 class Preview extends ViewGroup implements SurfaceHolder.Callback {
     private final String TAG = "Preview";
 
@@ -20,6 +24,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
     Size mPreviewSize;
     List<Size> mSupportedPreviewSizes;
     Camera mCamera;
+    private Context mContext;
 
     Preview(Context context, SurfaceView sv) {
         super(context);
@@ -27,6 +32,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
         mSurfaceView = sv;
 //        addView(mSurfaceView);
 
+        mContext = context;
         mHolder = mSurfaceView.getHolder();
         mHolder.addCallback(this);
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -148,11 +154,35 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
         if(mCamera != null) {
+
             Camera.Parameters parameters = mCamera.getParameters();
-            parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
-            requestLayout();
+            Display display = ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
+            if(display.getRotation() == Surface.ROTATION_0) {
+                parameters.setPreviewSize(mPreviewSize.height, mPreviewSize.width);
+                mCamera.setDisplayOrientation(90);
+            }
+
+            if(display.getRotation() == Surface.ROTATION_90) {
+                parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+            }
+
+            if(display.getRotation() == Surface.ROTATION_180) {
+                parameters.setPreviewSize(mPreviewSize.height, mPreviewSize.width);
+            }
+
+            if(display.getRotation() == Surface.ROTATION_270) {
+                parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+                mCamera.setDisplayOrientation(180);
+            }
 
             mCamera.setParameters(parameters);
+//            Camera.Parameters parameters = mCamera.getParameters();
+//            parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+//            requestLayout();
+//
+//            mCamera.setParameters(parameters);
+
             mCamera.startPreview();
         }
     }

@@ -25,6 +25,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -47,7 +48,7 @@ public class MainActivity extends Activity {
 
         preview = new Preview(this, (SurfaceView)findViewById(R.id.surfaceView));
         preview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        ((FrameLayout) findViewById(R.id.layout)).addView(preview);
+        ((FrameLayout) findViewById(R.id.camera)).addView(preview);
         preview.setKeepScreenOn(true);
 
         preview.setOnClickListener(new OnClickListener() {
@@ -90,6 +91,7 @@ public class MainActivity extends Activity {
         if(numCams > 0){
             try{
                 camera = Camera.open(0);
+//                camera.setDisplayOrientation(90);
                 camera.startPreview();
                 preview.setCamera(camera);
             } catch (RuntimeException ex){

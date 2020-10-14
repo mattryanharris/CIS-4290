@@ -24,15 +24,31 @@
 <!--    <include layout="@layout/content_main" />-->
 
 <!--</androidx.coordinatorlayout.widget.CoordinatorLayout>-->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <SurfaceView
-        android:id="@+id/surfaceView"
+    <FrameLayout
+        android:id="@+id/camera"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="450dp">
+
+        <SurfaceView
+            android:id="@+id/surfaceView"
+            android:layout_width="match_parent"
+            android:layout_height="450dp" />
+
+    </FrameLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/camera">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="List goes here"/>
+    </ScrollView>
+
 
     <!-- Button
         android:id="@+id/btnCapture"
@@ -42,4 +58,4 @@
         android:background="@drawable/round_button"
         android:text="@string/btn_capture" /-->
 
-</FrameLayout>
+</RelativeLayout>
