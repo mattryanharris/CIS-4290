@@ -21,6 +21,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
@@ -42,6 +43,7 @@ public class MainActivity extends Activity {
     Activity act;
     Context ctx;
     Classifier classifier;
+    private Handler handler = new Handler();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,11 +62,20 @@ public class MainActivity extends Activity {
         ((FrameLayout) findViewById(R.id.camera)).addView(preview);
         preview.setKeepScreenOn(true);
 
+        final Runnable runnable = new Runnable() {
+
+            @Override
+            public void run() {
+                camera.takePicture(shutterCallback, rawCallback, mPicture);
+                handler.postDelayed(this, 2000);
+            }
+        };
+
         preview.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
-                camera.takePicture(shutterCallback, rawCallback, mPicture);
+                handler.post(runnable);
             }
         });
 
