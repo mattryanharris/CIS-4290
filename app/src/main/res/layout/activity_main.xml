@@ -39,15 +39,26 @@
             android:layout_height="450dp" />
 
     </FrameLayout>
-    <ScrollView
-        android:layout_width="match_parent"
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="fill_parent"-->
+<!--        android:layout_below="@+id/camera">-->
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:text="List goes here"/>-->
+<!--    </ScrollView>-->
+    <ImageView
+        android:id="@+id/imageTest"
+        android:layout_width="250dp"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/camera">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="List goes here"/>
-    </ScrollView>
+        android:layout_below="@+id/camera"/>
+    <TextView
+        android:id="@+id/predicted"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"/>
 
 
     <!-- Button

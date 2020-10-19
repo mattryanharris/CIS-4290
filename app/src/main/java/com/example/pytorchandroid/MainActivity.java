@@ -4,28 +4,35 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -35,6 +42,8 @@ public class MainActivity extends Activity {
     Camera camera;
     Activity act;
     Context ctx;
+    Classifier classifier;
+    private Handler handler = new Handler();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,42 +55,31 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
+        classifier = new Classifier(Utils.assetFilePath(this,"mobilenet-v2.pt"));
+
         preview = new Preview(this, (SurfaceView)findViewById(R.id.surfaceView));
         preview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         ((FrameLayout) findViewById(R.id.camera)).addView(preview);
         preview.setKeepScreenOn(true);
 
+        final Runnable runnable = new Runnable() {
+
+            @Override
+            public void run() {
+                camera.takePicture(shutterCallback, rawCallback, mPicture);
+                handler.postDelayed(this, 2000);
+            }
+        };
+
         preview.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
-                camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+                handler.post(runnable);
             }
         });
 
-        Toast.makeText(ctx, getString(R.string.take_photo_help), Toast.LENGTH_LONG).show();
-
-        //		buttonClick = (Button) findViewById(R.id.btnCapture);
-        //
-        //		buttonClick.setOnClickListener(new OnClickListener() {
-        //			public void onClick(View v) {
-        ////				preview.camera.takePicture(shutterCallback, rawCallback, jpegCallback);
-        //				camera.takePicture(shutterCallback, rawCallback, jpegCallback);
-        //			}
-        //		});
-        //
-        //		buttonClick.setOnLongClickListener(new OnLongClickListener(){
-        //			@Override
-        //			public boolean onLongClick(View arg0) {
-        //				camera.autoFocus(new AutoFocusCallback(){
-        //					@Override
-        //					public void onAutoFocus(boolean arg0, Camera arg1) {
-        //						//camera.takePicture(shutterCallback, rawCallback, jpegCallback);
-        //					}
-        //				});
-        //				return true;
-        //			}
-        //		});
+//        Toast.makeText(ctx, getString(R.string.take_photo_help), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -134,47 +132,70 @@ public class MainActivity extends Activity {
         }
     };
 
-    PictureCallback jpegCallback = new PictureCallback() {
+    PictureCallback mPicture = new PictureCallback() {
+        @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            new SaveImageTask().execute(data);
-            resetCam();
-            Log.d(TAG, "onPictureTaken - jpeg");
+            File pictureFile = getOutputMediaFile();
+            if (pictureFile == null) {
+                return;
+            }
+            try {
+                FileOutputStream fos = new FileOutputStream(pictureFile);
+                fos.write(data);
+                fos.close();
+
+                //refresh gallery
+                refreshGallery(pictureFile);
+
+                //reset camera
+                resetCam();
+
+                //convert image file to bitmap
+                Bitmap bmp = BitmapFactory.decodeFile(String.valueOf(pictureFile));
+
+                //Set image view
+                ImageView imageView = findViewById(R.id.imageTest);
+                imageView.setImageBitmap(bmp);
+                //correct the image orientation
+                imageView.setRotation(90);
+
+                //get image from the view
+                Bitmap bmRotated = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+
+                //pass the rotated bitmap to the classifier to get predicted
+                String pred = classifier.predict(bmRotated);
+
+                //Set text view
+                TextView tvPred = findViewById(R.id.predicted);
+                tvPred.setText(pred);
+
+                //sent to arraylist in listview
+                //create click event listen on list item and send data to results intent
+
+            } catch (FileNotFoundException e) {
+
+            } catch (IOException e) {
+            }
         }
     };
-
-    private class SaveImageTask extends AsyncTask<byte[], Void, Void> {
-
-        @Override
-        protected Void doInBackground(byte[]... data) {
-            FileOutputStream outStream = null;
-
-            // Write to SD Card
-            try {
-                File sdCard = Environment.getExternalStorageDirectory();
-                File dir = new File (sdCard.getAbsolutePath() + "/camtest");
-                dir.mkdirs();
-
-                String fileName = String.format("%d.jpg", System.currentTimeMillis());
-                File outFile = new File(dir, fileName);
-
-                outStream = new FileOutputStream(outFile);
-                outStream.write(data[0]);
-                outStream.flush();
-                outStream.close();
-
-                Log.d(TAG, "onPictureTaken - wrote bytes: " + data.length + " to " + outFile.getAbsolutePath());
-
-                refreshGallery(outFile);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
+    private static File getOutputMediaFile() {
+        File mediaStorageDir = new File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyCameraApp");
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("MyCameraApp", "failed to create directory");
+                return null;
             }
-            return null;
         }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".jpg");
 
+        return mediaFile;
     }
+
 }
 
 
@@ -226,18 +247,18 @@ public class MainActivity extends Activity {
 //    }
 //
 //    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == cameraRequestCode && resultCode == RESULT_OK) {
-//
-//            Intent resultView = new Intent(this, Result.class);
-//
-//            resultView.putExtra("imagedata", data.getExtras());
-//
-//            Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
-//
-//            String pred = classifier.predict(imageBitmap);
+////    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+////
+////        super.onActivityResult(requestCode, resultCode, data);
+////        if (requestCode == cameraRequestCode && resultCode == RESULT_OK) {
+////
+////            Intent resultView = new Intent(this, Result.class);
+////
+////            resultView.putExtra("imagedata", data.getExtras());
+////
+////            Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+////
+////            String pred = classifier.predict(imageBitmap);
 //            resultView.putExtra("pred", pred);
 //
 //            startActivity(resultView);
