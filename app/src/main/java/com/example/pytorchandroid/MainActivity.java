@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import android.app.Activity;
@@ -32,6 +33,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +46,10 @@ public class MainActivity extends Activity {
     Context ctx;
     Classifier classifier;
     private Handler handler = new Handler();
+    //Set up Camera variables
+    private ArrayList<CameraItem> cameraList = new ArrayList<CameraItem>();
+    private CameraAdapter cameraAdapter;
+    private ListView listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +62,21 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         classifier = new Classifier(Utils.assetFilePath(this,"mobilenet-v2.pt"));
+
+        // Set up ListView and ArrayList
+        listView = (ListView) findViewById(R.id.camera_list);
+        ArrayList<String> filePaths = new ArrayList<String>();
+        filePaths = getFilePaths();
+        for (int i = 0; i < filePaths.size(); i++){
+            Bitmap bmp = processFilePath(filePaths.get(i));
+            String detail = classifier.predict(bmp);
+            cameraList.add(new CameraItem(bmp, detail));
+        }
+
+        //Now enter the ArrayList into the Adapter
+        cameraAdapter = new CameraAdapter(this, cameraList);
+        listView.setAdapter(cameraAdapter);
+
 
         preview = new Preview(this, (SurfaceView)findViewById(R.id.surfaceView));
         preview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -154,23 +175,33 @@ public class MainActivity extends Activity {
                 Bitmap bmp = BitmapFactory.decodeFile(String.valueOf(pictureFile));
 
                 //Set image view
-                ImageView imageView = findViewById(R.id.imageTest);
-                imageView.setImageBitmap(bmp);
+                //ImageView imageView = findViewById(R.id.imageTest);
+                //imageView.setImageBitmap(bmp);
                 //correct the image orientation
-                imageView.setRotation(90);
+                //imageView.setRotation(90);
 
                 //get image from the view
-                Bitmap bmRotated = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+                //Bitmap bmRotated = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
 
                 //pass the rotated bitmap to the classifier to get predicted
-                String pred = classifier.predict(bmRotated);
+                //String pred = classifier.predict(bmRotated);
 
                 //Set text view
-                TextView tvPred = findViewById(R.id.predicted);
-                tvPred.setText(pred);
+                //TextView tvPred = findViewById(R.id.predicted);
+                //tvPred.setText(pred);
 
                 //sent to arraylist in listview
                 //create click event listen on list item and send data to results intent
+
+                //IDEA FOR FINAL ITERATION OF THE CODE
+             //   ArrayList<CameraItem> cameraList = new ArrayList<>();
+                //For loop
+
+             //   cameraList.add(new cameraItem(Bitmap, Label));
+
+             //   CameraAdapter = new CameraAdapter(this, cameraList);
+             //   listView.setAdapter(CameraAdapter);
+
 
             } catch (FileNotFoundException e) {
 
@@ -194,6 +225,45 @@ public class MainActivity extends Activity {
                 + "IMG_" + timeStamp + ".jpg");
 
         return mediaFile;
+    }
+
+    private static ArrayList<String> getFilePaths(){
+        ArrayList<String> filePaths = new ArrayList<String>();
+
+        File directory = new File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator, "MyCameraApp");
+
+        // check for directory
+        if (directory.isDirectory())
+        {
+            // getting list of file paths
+            File[] listFiles = directory.listFiles();
+
+            // Check for count
+            if (listFiles.length > 0)
+            {
+
+                for (int i = 0; i < listFiles.length; i++)
+                {
+
+                    String filePath = listFiles[i].getAbsolutePath();
+                    filePaths.add(filePath);
+
+                }
+            }
+            else
+            {
+                // image directory is empty
+                String emptyError = "Album is empty";
+            }
+
+        }
+        return filePaths;
+    }
+    // Still thinking about how to get around this issue.
+    private static Bitmap processFilePath(String filePath){
+        Bitmap bmp = BitmapFactory.decodeFile(filePath);
+        return bmp;
     }
 
 }
