@@ -67,6 +67,7 @@ public class MainActivity extends Activity {
         listView = (ListView) findViewById(R.id.camera_list);
         ArrayList<String> filePaths = new ArrayList<String>();
         filePaths = getFilePaths();
+        // Run each individual file paths to the classifier then added to the cameraList array
         for (int i = 0; i < filePaths.size(); i++){
             Bitmap bmp = processFilePath(filePaths.get(i));
             String detail = classifier.predict(bmp);

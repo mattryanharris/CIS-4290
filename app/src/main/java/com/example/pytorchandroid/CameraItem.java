@@ -3,7 +3,7 @@ package com.example.pytorchandroid;
 import android.graphics.Bitmap;
 
 public class CameraItem {
-    //Storage for variables
+    //Storage for variables making it possible to have an Array List of CameraItem Object
     //Object of the image
     private Bitmap cameraImage;
     //Classifier of the object

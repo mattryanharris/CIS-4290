@@ -25,6 +25,7 @@ public class CameraAdapter extends ArrayAdapter<CameraItem> {
         cameraItemList = list;
     }
 
+    //This should adapt the ArrayList to the images in the array_items_list
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
