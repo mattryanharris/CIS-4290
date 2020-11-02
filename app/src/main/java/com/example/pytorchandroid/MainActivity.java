@@ -238,7 +238,7 @@ public class MainActivity extends Activity {
 //                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //
 //                startActivityForResult(cameraIntent,cameraRequestCode);
-//
+////
 //            }
 //
 //

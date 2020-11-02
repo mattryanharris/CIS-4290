@@ -26,6 +26,11 @@ public class Result extends AppCompatActivity {
         TextView textView = findViewById(R.id.label);
         textView.setText(pred);
 
+       // TextView ImageID = findViewById(R.id.label);
+       // textView.setText(pred);
+
+        //set button to return to main
+        
     }
 
 }
