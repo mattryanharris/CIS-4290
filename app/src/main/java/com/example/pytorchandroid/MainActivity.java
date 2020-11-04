@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        classifier = new Classifier(Utils.assetFilePath(this,"mobilenet-v2.pt"));
+        classifier = new Classifier(Utils.assetFilePath(this,"resnet-sm 11-4-20.pt"));
 
         preview = new Preview(this, (SurfaceView)findViewById(R.id.surfaceView));
         preview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
