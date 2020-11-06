@@ -33,32 +33,43 @@
         android:layout_width="match_parent"
         android:layout_height="450dp">
 
+        <TextView
+            android:id="@+id/txtOverSv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+
         <SurfaceView
             android:id="@+id/surfaceView"
             android:layout_width="match_parent"
             android:layout_height="450dp" />
 
     </FrameLayout>
-<!--    <ScrollView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="fill_parent"-->
-<!--        android:layout_below="@+id/camera">-->
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:text="List goes here"/>-->
-<!--    </ScrollView>-->
-    <ImageView
-        android:id="@+id/imageTest"
-        android:layout_width="250dp"
+    <!--This is the scroll view that will contain the list -->
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/camera"/>
-    <TextView
-        android:id="@+id/predicted"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"/>
+        android:fillViewport="true"
+        android:layout_below="@+id/camera">
+        <!--The ListView will be populated with the array content -->
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/camera_list"/>
+    </ScrollView>
+<!--    <ImageView-->
+<!--        android:id="@+id/imageTest"-->
+<!--        android:layout_width="250dp"-->
+<!--        android:layout_height="fill_parent"-->
+<!--        android:layout_below="@+id/camera"/>-->
+<!--    <TextView-->
+<!--        android:id="@+id/predicted"-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_alignParentBottom="true"/>-->
 
 
     <!-- Button
