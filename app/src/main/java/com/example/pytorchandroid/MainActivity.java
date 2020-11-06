@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        classifier = new Classifier(Utils.assetFilePath(this,"mobilenet-v2.pt"));
+        classifier = new Classifier(Utils.assetFilePath(this,"resnet-sm.pt"));
 
         // Set up ListView and ArrayList
         listView = (ListView) findViewById(R.id.camera_list);
