@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -52,6 +53,7 @@ public class MainActivity extends Activity {
     private ArrayList<CameraItem> cameraList = new ArrayList<CameraItem>();
     private CameraAdapter cameraAdapter;
     private ListView listView;
+    Bitmap bmp;
     String detail;
 
     @Override
@@ -64,7 +66,7 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        classifier = new Classifier(Utils.assetFilePath(this,"mobilenet-v2.pt"));
+        classifier = new Classifier(Utils.assetFilePath(this,"resnet-sm11-4-20.pt"));
 
         // Set up ListView and ArrayList
         listView = (ListView) findViewById(R.id.camera_list);
@@ -75,7 +77,7 @@ public class MainActivity extends Activity {
 
         // Run each individual file paths to the classifier then added to the cameraList array
         for (int i = 0; i < filePaths.size(); i++){
-            Bitmap bmp = processFilePath(filePaths.get(i));
+            bmp = processFilePath(filePaths.get(i));
             detail = classifier.predict(bmp);
             cameraList.add(new CameraItem(bmp, detail));
         }
@@ -83,6 +85,8 @@ public class MainActivity extends Activity {
         //Now enter the ArrayList into the Adapter
         cameraAdapter = new CameraAdapter(this, cameraList);
         listView.setAdapter(cameraAdapter);
+
+
 
 
         preview = new Preview(this, (SurfaceView)findViewById(R.id.surfaceView));
@@ -113,6 +117,29 @@ public class MainActivity extends Activity {
                 handler.post(runnable);
             }
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+//                ImageView imageview = (ImageView) view.findViewById(R.id.imageview_array);
+                TextView textTv = view.findViewById(R.id.textview_array);
+
+//                int images = imageview.getId();
+
+                Intent resultView = new Intent(MainActivity.this, Result.class);
+
+
+                //putextra(imagedata)
+
+//                resultView.putExtra("imagedata", images);
+                resultView.putExtra("pred", textTv.getText().toString());
+
+
+                startActivity(resultView);
+            }
+        });
+
 
 //        Toast.makeText(ctx, getString(R.string.take_photo_help), Toast.LENGTH_LONG).show();
     }

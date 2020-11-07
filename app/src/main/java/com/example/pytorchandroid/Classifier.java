@@ -1,6 +1,8 @@
 package com.example.pytorchandroid;
 
 import android.graphics.Bitmap;
+import android.util.Log;
+
 import org.pytorch.Tensor;
 import org.pytorch.Module;
 import org.pytorch.IValue;
@@ -12,6 +14,7 @@ public class Classifier {
     Module model;
     float[] mean = {0.485f, 0.456f, 0.406f};
     float[] std = {0.229f, 0.224f, 0.225f};
+    public String labelScore;
 
     public Classifier(String modelPath){
 
@@ -59,9 +62,20 @@ public class Classifier {
         Tensor outputs = model.forward(inputs).toTensor();
         float[] scores = outputs.getDataAsFloatArray();
 
+        float max = scores[0];
+        for (int i = 0; i < scores.length; i++) {
+            if (scores[i] > max) {
+                max = scores[i];
+            }
+        }
+        Log.d("Classifier", String.valueOf(max));
+
         int classIndex = argMax(scores);
 
-        return Constants.IMAGENET_CLASSES[classIndex];
+        float scorePercentage = max * 100;
+        String fullDetail = Constants.IMAGENET_CLASSES[classIndex] + " " + String.format( "%.2f", scorePercentage );
+
+        return fullDetail;
 
     }
 

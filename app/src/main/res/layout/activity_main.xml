@@ -48,7 +48,7 @@
 
     </FrameLayout>
     <!--This is the scroll view that will contain the list -->
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:fillViewport="true"
@@ -57,8 +57,10 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fastScrollEnabled="true"
+            android:scrollingCache="false"
             android:id="@+id/camera_list"/>
-    </ScrollView>
+    </LinearLayout>
 <!--    <ImageView-->
 <!--        android:id="@+id/imageTest"-->
 <!--        android:layout_width="250dp"-->
