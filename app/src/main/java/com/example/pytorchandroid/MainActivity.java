@@ -1,5 +1,6 @@
 package com.example.pytorchandroid;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,6 +15,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
@@ -121,26 +123,22 @@ public class MainActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-//                ImageView imageview = (ImageView) view.findViewById(R.id.imageview_array);
+                ImageView imageview = (ImageView) view.findViewById(R.id.imageview_array);
                 TextView textTv = view.findViewById(R.id.textview_array);
 
-//                int images = imageview.getId();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                Bitmap bitmap = ((BitmapDrawable) imageview.getDrawable()).getBitmap();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
 
                 Intent resultView = new Intent(MainActivity.this, Result.class);
 
-
-                //putextra(imagedata)
-
-//                resultView.putExtra("imagedata", images);
+                resultView.putExtra("imagedata", byteArray);
                 resultView.putExtra("pred", textTv.getText().toString());
-
 
                 startActivity(resultView);
             }
         });
-
-
 //        Toast.makeText(ctx, getString(R.string.take_photo_help), Toast.LENGTH_LONG).show();
     }
 

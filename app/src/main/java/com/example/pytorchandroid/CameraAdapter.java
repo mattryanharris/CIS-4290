@@ -47,6 +47,8 @@ public class CameraAdapter extends ArrayAdapter<CameraItem> {
         ImageView image = listItem.findViewById(R.id.imageview_array);
         image.setImageBitmap(currentItem.getCameraImage());
 
+        image.setRotation(90);
+
         //Sets the classifier details to the textview_array in the array_items_list
         TextView details = listItem.findViewById(R.id.textview_array);
         details.setText(currentItem.getCameraClassified());

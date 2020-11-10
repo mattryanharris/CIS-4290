@@ -8,23 +8,6 @@
     tools:context=".Result"
     tools:showIn="@layout/activity_result">
 
-    <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="101dp"
-        android:layout_marginBottom="4dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Results"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        app:layout_constraintBottom_toTopOf="@+id/label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/label"
         android:layout_width="wrap_content"
@@ -33,7 +16,6 @@
         android:text="Hello World"
         android:textSize="10pt"
         app:layout_constraintEnd_toEndOf="@id/image"
-
         app:layout_constraintStart_toStartOf="@id/image"
         app:layout_constraintTop_toBottomOf="@id/image" />
 
@@ -50,5 +32,16 @@
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.337" />
+
+    <Button
+        android:id="@+id/share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="183dp"
+        android:layout_marginBottom="100dp"
+        android:text="Share"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
