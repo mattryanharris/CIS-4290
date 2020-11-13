@@ -51,12 +51,14 @@ public class MainActivity extends Activity {
     Context ctx;
     Classifier classifier;
     private Handler handler = new Handler();
+    private Runnable runnable;
     //Set up Camera variables
     private ArrayList<CameraItem> cameraList = new ArrayList<CameraItem>();
     private CameraAdapter cameraAdapter;
     private ListView listView;
     Bitmap bmp;
     String detail;
+    private boolean isRunning;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,9 +90,6 @@ public class MainActivity extends Activity {
         cameraAdapter = new CameraAdapter(this, cameraList);
         listView.setAdapter(cameraAdapter);
 
-
-
-
         preview = new Preview(this, (SurfaceView)findViewById(R.id.surfaceView));
         preview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         ((FrameLayout) findViewById(R.id.camera)).addView(preview);
@@ -103,7 +102,7 @@ public class MainActivity extends Activity {
 
         preview.setKeepScreenOn(true);
 
-        final Runnable runnable = new Runnable() {
+        runnable = new Runnable() {
 
             @Override
             public void run() {
@@ -112,11 +111,20 @@ public class MainActivity extends Activity {
             }
         };
 
+        //initial state should be false
+        isRunning = false;
         preview.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
-                handler.post(runnable);
+                if (!isRunning){
+                    isRunning = true;
+                    handler.post(runnable);
+                } else {
+                    isRunning = false;
+                    handler.removeCallbacks(runnable);
+                }
+
             }
         });
 
@@ -212,7 +220,9 @@ public class MainActivity extends Activity {
 
                 //convert image file to bitmap
                 Bitmap bmp = BitmapFactory.decodeFile(String.valueOf(pictureFile));
-
+                String detail = classifier.predict(bmp);
+                cameraList.add(new CameraItem(bmp, detail));
+                cameraAdapter.notifyDataSetChanged();
 
                 //Set image view
                 //ImageView imageView = findViewById(R.id.imageTest);
@@ -306,6 +316,14 @@ public class MainActivity extends Activity {
         return bmp;
     }
 
+    //Stop the runnable when changing orientation
+
+
+    @Override
+    protected void onDestroy() {
+        handler.removeCallbacks(runnable);
+        super.onDestroy();
+    }
 }
 
 
