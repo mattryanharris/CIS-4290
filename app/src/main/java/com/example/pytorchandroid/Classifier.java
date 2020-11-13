@@ -73,7 +73,8 @@ public class Classifier {
         int classIndex = argMax(scores);
 
         float scorePercentage = max * 100;
-        String fullDetail = Constants.IMAGENET_CLASSES[classIndex] + " " + String.format( "%.2f", scorePercentage );
+        int integerScorePercentage = Math.round(scorePercentage);
+        String fullDetail = Constants.IMAGENET_CLASSES[classIndex] + " " + String.format( "%d", integerScorePercentage ) + "%";
 
         return fullDetail;
 

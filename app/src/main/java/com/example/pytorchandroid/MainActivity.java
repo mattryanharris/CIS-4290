@@ -134,14 +134,15 @@ public class MainActivity extends Activity {
                 ImageView imageview = (ImageView) view.findViewById(R.id.imageview_array);
                 TextView textTv = view.findViewById(R.id.textview_array);
 
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                Bitmap bitmap = ((BitmapDrawable) imageview.getDrawable()).getBitmap();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
+
+                //ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                //Bitmap bitmap = ((BitmapDrawable) imageview.getDrawable()).getBitmap();
+                //bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                //byte[] byteArray = stream.toByteArray();
 
                 Intent resultView = new Intent(MainActivity.this, Result.class);
 
-                resultView.putExtra("imagedata", byteArray);
+                resultView.putExtra("imagedata", position);
                 resultView.putExtra("pred", textTv.getText().toString());
 
                 startActivity(resultView);
@@ -316,7 +317,6 @@ public class MainActivity extends Activity {
         return bmp;
     }
 
-    //Stop the runnable when changing orientation
 
 
     @Override
