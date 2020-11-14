@@ -37,7 +37,8 @@ public class Result extends AppCompatActivity {
         filePaths = new ArrayList<String>();
         filePaths = getFilePaths();
 
-        Bitmap bmp = processFilePath(filePaths.get(position));
+        final int truePosition = filePaths.size()-1-position;
+        Bitmap bmp = processFilePath(filePaths.get(truePosition));
 
         //byte[] byteArray = getIntent().getByteArrayExtra("imagedata");
         //Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
@@ -63,7 +64,7 @@ public class Result extends AppCompatActivity {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("image/*");
                 String shareBody = "Here is the share content body";
-                sharingIntent.putExtra(Intent.EXTRA_STREAM, filePaths.get(position));
+                sharingIntent.putExtra(Intent.EXTRA_STREAM, filePaths.get(truePosition));
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
 
 

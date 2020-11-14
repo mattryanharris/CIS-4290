@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
 //        Log.d(TAG, String.valueOf(filePaths.size() + " images in storage"));
 
         // Run each individual file paths to the classifier then added to the cameraList array
-        for (int i = 0; i < filePaths.size(); i++){
+        for (int i = filePaths.size() - 1; i >= 0; i--){
             bmp = processFilePath(filePaths.get(i));
             detail = classifier.predict(bmp);
             cameraList.add(new CameraItem(bmp, detail));
@@ -95,11 +95,15 @@ public class MainActivity extends Activity {
         ((FrameLayout) findViewById(R.id.camera)).addView(preview);
 
         //add a textview to the surfaceview
-        TextView txt=(TextView)findViewById(R.id.txtOverSv);
-        txt.setText(detail);
-        ((ViewGroup)txt.getParent()).removeView(txt);
-        preview.addView(txt);
-
+        if (!filePaths.isEmpty()) {
+            final int truePosition = filePaths.size() - 1;
+            Bitmap ARbmp = processFilePath(filePaths.get(truePosition));
+            String ARdetail = classifier.predict(ARbmp);
+            TextView txt = (TextView) findViewById(R.id.txtOverSv);
+            txt.setText(ARdetail);
+            ((ViewGroup) txt.getParent()).removeView(txt);
+            preview.addView(txt);
+        }
         preview.setKeepScreenOn(true);
 
         runnable = new Runnable() {
@@ -131,6 +135,8 @@ public class MainActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                isRunning = false;
+                handler.removeCallbacks(runnable);
                 ImageView imageview = (ImageView) view.findViewById(R.id.imageview_array);
                 TextView textTv = view.findViewById(R.id.textview_array);
 
@@ -222,8 +228,13 @@ public class MainActivity extends Activity {
                 //convert image file to bitmap
                 Bitmap bmp = BitmapFactory.decodeFile(String.valueOf(pictureFile));
                 String detail = classifier.predict(bmp);
-                cameraList.add(new CameraItem(bmp, detail));
+                cameraList.add(0, new CameraItem(bmp, detail));
                 cameraAdapter.notifyDataSetChanged();
+
+                TextView txt=(TextView)findViewById(R.id.txtOverSv);
+                txt.setText(detail);
+                ((ViewGroup)txt.getParent()).removeView(txt);
+                preview.addView(txt);
 
                 //Set image view
                 //ImageView imageView = findViewById(R.id.imageTest);
@@ -321,6 +332,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        isRunning = false;
         handler.removeCallbacks(runnable);
         super.onDestroy();
     }
