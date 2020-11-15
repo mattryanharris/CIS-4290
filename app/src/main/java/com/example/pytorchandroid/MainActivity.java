@@ -161,6 +161,8 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         int numCams = Camera.getNumberOfCameras();
+        TextView txt=(TextView)findViewById(R.id.txtOverSv);
+        txt.setText("");
         if(numCams > 0){
             try{
                 camera = Camera.open(0);

@@ -32,28 +32,27 @@ public class CameraAdapter extends ArrayAdapter<CameraItem> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
 
-//        Log.d(TAG, String.valueOf(cameraItemList.size()));
-
-        View listItem = convertView;
-
-        if(listItem == null){
-            listItem = LayoutInflater.from(cContext).inflate(R.layout.array_items_list,parent,false);
+//        Log.d(TAG, String.valueOf(cameraItemList.size()))
+        View view;
+        if(convertView == null){
+            view = LayoutInflater.from(cContext).inflate(R.layout.array_items_list,parent,false);
+        } else {
+            view = convertView;
         }
-
 
         CameraItem currentItem = cameraItemList.get(position);
 
         //Sets the image to the imageview_array in the array_items_list
-        ImageView image = listItem.findViewById(R.id.imageview_array);
+        ImageView image = view.findViewById(R.id.imageview_array);
         image.setImageBitmap(currentItem.getCameraImage());
 
         image.setRotation(90);
 
         //Sets the classifier details to the textview_array in the array_items_list
-        TextView details = listItem.findViewById(R.id.textview_array);
+        TextView details = view.findViewById(R.id.textview_array);
         details.setText(currentItem.getCameraClassified());
 
-        return listItem;
+        return view;
     }
 
 }

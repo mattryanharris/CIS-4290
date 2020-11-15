@@ -14,11 +14,13 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/pytorchandroid/CameraAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/pytorchandroid/CameraAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/pytorchandroid/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/pytorchandroid/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/pytorchandroid/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/pytorchandroid/Result.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/array_items_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/array_items_list.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
@@ -371,7 +373,7 @@
       <screen x="0" y="23" width="1680" height="972" />
     </state>
     <state x="100" y="123" width="1479" height="772" key="com.intellij.dvcs.ui.CompareBranchesDialog/-1920.23.1920.1057/0.23.1680.972@0.23.1680.972" timestamp="1601919865915" />
-    <state x="559" y="341" key="com.intellij.ide.util.TipDialog" timestamp="1605309382976">
+    <state x="559" y="341" key="com.intellij.ide.util.TipDialog" timestamp="1605382162357">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="423" y="-727" key="com.intellij.ide.util.TipDialog/-136.-1057.1920.1007/0.23.1680.1027@-136.-1057.1920.1007" timestamp="1604957778719" />
@@ -379,7 +381,7 @@
     <state x="489" y="343" key="com.intellij.ide.util.TipDialog/-136.-1057.1920.1057/0.23.1680.977@0.23.1680.977" timestamp="1604982462514" />
     <state x="400" y="-711" key="com.intellij.ide.util.TipDialog/-159.-1057.1920.1057/0.23.1680.977@-159.-1057.1920.1057" timestamp="1604439725466" />
     <state x="489" y="341" key="com.intellij.ide.util.TipDialog/-1920.23.1920.1057/0.23.1680.972@0.23.1680.972" timestamp="1601916890485" />
-    <state x="559" y="341" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605309382976" />
+    <state x="559" y="341" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605382162357" />
     <state x="419" y="292" key="com.intellij.ide.util.TipDialog/0.23.1440.822@0.23.1440.822" timestamp="1602370676031" />
     <state x="419" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.827@0.23.1440.827" timestamp="1604961407744" />
     <state x="511" y="-832" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1604680184854">
