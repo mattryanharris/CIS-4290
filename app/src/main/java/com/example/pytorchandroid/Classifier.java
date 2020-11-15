@@ -74,7 +74,19 @@ public class Classifier {
 
         float scorePercentage = max * 100;
         int integerScorePercentage = Math.round(scorePercentage);
-        String fullDetail = Constants.IMAGENET_CLASSES[classIndex] + " " + String.format( "%d", integerScorePercentage ) + "%";
+
+        //interp the confidence level and then add a label
+        String fullDetail = Constants.IMAGENET_CLASSES[classIndex] + " " + String.format( "%d", integerScorePercentage ) + "% Match ";;
+        if(integerScorePercentage>85){
+            fullDetail += "(High)";
+        }else if(integerScorePercentage>70){
+            fullDetail += "(Med)";
+        }else if(integerScorePercentage>50){
+            fullDetail += "(low)";
+        }else{
+            fullDetail += "(very low)";
+        }
+
 
         return fullDetail;
 

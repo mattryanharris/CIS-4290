@@ -79,8 +79,18 @@ public class MainActivity extends Activity {
 
 //        Log.d(TAG, String.valueOf(filePaths.size() + " images in storage"));
 
+
+
         // Run each individual file paths to the classifier then added to the cameraList array
-        for (int i = filePaths.size() - 1; i >= 0; i--){
+
+        //limits the list to 15 items
+        int j = 0;
+        int listLimit = 15;
+        if(filePaths.size()>listLimit){
+            j = filePaths.size()-15;
+        }
+
+        for (int i = j; i <= filePaths.size() - 1; i++){
             bmp = processFilePath(filePaths.get(i));
             detail = classifier.predict(bmp);
             cameraList.add(new CameraItem(bmp, detail));

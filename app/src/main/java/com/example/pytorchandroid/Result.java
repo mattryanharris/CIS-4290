@@ -62,7 +62,7 @@ public class Result extends AppCompatActivity {
                 Log.d("Results.java", "Share button clicked");
 
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                sharingIntent.setType("image/*");
+                sharingIntent.setType("*/*");
                 String shareBody = "Here is the share content body";
                 sharingIntent.putExtra(Intent.EXTRA_STREAM, filePaths.get(truePosition));
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
