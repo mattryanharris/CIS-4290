@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 //SplashScreen
 public class SplashActivity extends AppCompatActivity {
 
-    private static int SPLASH_SCREEN_TIMEOUT = 2000;
+    private static int SPLASH_SCREEN_TIMEOUT = 5000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class SplashActivity extends AppCompatActivity {
         Animation fadeOut = new AlphaAnimation(1,0);
         fadeOut.setInterpolator(new AccelerateInterpolator());
         fadeOut.setStartOffset(500);
-        fadeOut.setDuration(1800);
+        fadeOut.setDuration(4800);
         ImageView image = findViewById(R.id.imageView);
 
         image.setAnimation(fadeOut);
