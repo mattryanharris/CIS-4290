@@ -1,6 +1,7 @@
 package com.example.pytorchandroid;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,18 @@ public class CameraAdapter extends ArrayAdapter<CameraItem> {
         //Sets the classifier details to the textview_array in the array_items_list
         TextView details = view.findViewById(R.id.textview_array);
         details.setText(currentItem.getCameraClassified());
+
+        //Split by whitespace
+        String [] splitDetail = currentItem.getCameraClassified().split("\\s+");
+        if (splitDetail[splitDetail.length-1].equalsIgnoreCase("(high)")){
+            details.setTextColor(Color.GREEN);
+        } else if (splitDetail[splitDetail.length-1].equalsIgnoreCase("(med)")){
+            details.setTextColor(Color.);
+        } else {
+            details.setTextColor(Color.RED);
+        }
+
+        Log.d("Camera Adapter", splitDetail[splitDetail.length-1]);
 
         return view;
     }

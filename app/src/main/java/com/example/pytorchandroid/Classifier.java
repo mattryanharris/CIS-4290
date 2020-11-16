@@ -68,7 +68,7 @@ public class Classifier {
                 max = scores[i];
             }
         }
-        Log.d("Classifier", String.valueOf(max));
+
 
         int classIndex = argMax(scores);
 
@@ -82,7 +82,7 @@ public class Classifier {
         }else if(integerScorePercentage>70){
             fullDetail += "(Med)";
         }else if(integerScorePercentage>50){
-            fullDetail += "(low)";
+            fullDetail += "(Low)";
         }else{
             fullDetail += "(very low)";
         }
