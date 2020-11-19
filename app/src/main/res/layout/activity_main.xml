@@ -31,7 +31,7 @@
     <FrameLayout
         android:id="@+id/camera"
         android:layout_width="match_parent"
-        android:layout_height="450dp">
+        android:layout_height="530dp">
 
         <TextView
             android:id="@+id/txtOverSv"
@@ -44,16 +44,23 @@
         <SurfaceView
             android:id="@+id/surfaceView"
             android:layout_width="match_parent"
-            android:layout_height="450dp" />
+            android:layout_height="530dp" />
 
     </FrameLayout>
     <!--This is the scroll view that will contain the list -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/info"
+        android:layout_below="@+id/camera"
+        android:orientation="horizontal"
 
+    />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:fillViewport="true"
-        android:layout_below="@+id/camera">
+        android:layout_below="@+id/info">
         <!--The ListView will be populated with the array content -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/camera_list"
