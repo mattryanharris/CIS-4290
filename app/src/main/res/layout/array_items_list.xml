@@ -9,7 +9,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:adjustViewBounds="true"
-
         android:scaleType="fitXY"/>
     <TextView
         android:id="@+id/textview_array"
