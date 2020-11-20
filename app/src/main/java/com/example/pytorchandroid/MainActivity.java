@@ -180,6 +180,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        initializeUiandCamera();
         int numCams = Camera.getNumberOfCameras();
         TextView txt=(TextView)findViewById(R.id.txtOverSv);
         txt.setText("");
