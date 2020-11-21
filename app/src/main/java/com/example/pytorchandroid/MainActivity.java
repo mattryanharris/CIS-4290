@@ -82,9 +82,19 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        File dir = new File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyCameraApp");
+        if (dir.isDirectory())
+        {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++)
+            {
+                new File(dir, children[i]).delete();
+            }
+        }
+
         checkAndroidVersion();
         initializeUiandCamera();
-
     }
 
 
@@ -103,7 +113,15 @@ public class MainActivity extends Activity {
         // Run each individual file paths to the classifier then added to the cameraList array
         //limits the list to 15 items
 
-        for (int i = filePaths.size() - 1;  i >= 0; i--){
+        int fileSize = filePaths.size();
+        int setSize;
+        if (fileSize <=  15){
+            setSize = 0;
+        } else {
+            setSize = filePaths.size() - 15;
+        }
+
+        for (int i = filePaths.size() - 1;  i >= setSize; i--){
             bmp = processFilePath(filePaths.get(i));
             detail = classifier.predict(bmp);
             cameraList.add(new CameraItem(bmp, detail));
