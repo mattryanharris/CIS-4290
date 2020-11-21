@@ -8,17 +8,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -29,7 +22,6 @@ import android.hardware.Camera.ShutterCallback;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -50,11 +42,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
     Preview preview;
@@ -68,11 +55,10 @@ public class MainActivity extends Activity {
     //Set up Camera variables
     private ArrayList<CameraItem> cameraList = new ArrayList<CameraItem>();
     private CameraAdapter cameraAdapter;
-    private RecyclerView recyclerView;
+    private ListView listView;
     Bitmap bmp;
     String detail;
-    private boolean isStatic;
-    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS= 7;
+    private boolean isRunning;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,25 +68,21 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        checkAndroidVersion();
-        initializeUiandCamera();
-
-    }
-
-
-
-    public void initializeUiandCamera() {
         setContentView(R.layout.activity_main);
 
         classifier = new Classifier(Utils.assetFilePath(this,"resnet-sm11-4-20.pt"));
+
         // Set up ListView and ArrayList
-        recyclerView = (RecyclerView) findViewById(R.id.camera_list);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+        listView = (ListView) findViewById(R.id.camera_list);
         ArrayList<String> filePaths = new ArrayList<String>();
         filePaths = getFilePaths();
 
+//        Log.d(TAG, String.valueOf(filePaths.size() + " images in storage"));
+
+
+
         // Run each individual file paths to the classifier then added to the cameraList array
+
         //limits the list to 15 items
         int j = 0;
         int listLimit = 15;
@@ -116,7 +98,7 @@ public class MainActivity extends Activity {
 
         //Now enter the ArrayList into the Adapter
         cameraAdapter = new CameraAdapter(this, cameraList);
-        recyclerView.setAdapter(cameraAdapter);
+        listView.setAdapter(cameraAdapter);
 
         preview = new Preview(this, (SurfaceView)findViewById(R.id.surfaceView));
         preview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -134,30 +116,17 @@ public class MainActivity extends Activity {
         }
         preview.setKeepScreenOn(true);
 
-        // Initiate isStatic as false
-        isStatic = false;
-        //Runs the loop
         runnable = new Runnable() {
+
             @Override
             public void run() {
                 camera.takePicture(shutterCallback, rawCallback, mPicture);
-                handler.postDelayed(this, 4000);
+                handler.postDelayed(this, 2000);
             }
         };
 
-        handler.post(runnable);
-
-        //Enables and starts the Static portion of the camera
-        preview.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                isStatic = true;
-                camera.takePicture(shutterCallback, rawCallback, mPicture);
-            }
-        });
-
         //initial state should be false
-        /*isRunning = false;
+        isRunning = false;
         preview.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -173,30 +142,36 @@ public class MainActivity extends Activity {
             }
         });
 
-         */
-
-        cameraAdapter.setOnItemClickListener(new CameraAdapter.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(String text, int position) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                isRunning = false;
                 handler.removeCallbacks(runnable);
+                ImageView imageview = (ImageView) view.findViewById(R.id.imageview_array);
+                TextView textTv = view.findViewById(R.id.textview_array);
+
+
+                //ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                //Bitmap bitmap = ((BitmapDrawable) imageview.getDrawable()).getBitmap();
+                //bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                //byte[] byteArray = stream.toByteArray();
+
                 Intent resultView = new Intent(MainActivity.this, Result.class);
 
                 resultView.putExtra("imagedata", position);
-                resultView.putExtra("pred", text);
+                resultView.putExtra("pred", textTv.getText().toString());
 
                 startActivity(resultView);
             }
         });
+//        Toast.makeText(ctx, getString(R.string.take_photo_help), Toast.LENGTH_LONG).show();
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
         int numCams = Camera.getNumberOfCameras();
         TextView txt=(TextView)findViewById(R.id.txtOverSv);
-
         txt.setText("");
         if(numCams > 0){
             try{
@@ -208,14 +183,10 @@ public class MainActivity extends Activity {
                 Toast.makeText(ctx, getString(R.string.camera_not_found), Toast.LENGTH_LONG).show();
             }
         }
-        handler.post(runnable);
     }
 
     @Override
     protected void onPause() {
-
-        handler.removeCallbacks(runnable);
-
         if(camera != null) {
             camera.stopPreview();
             preview.setCamera(null);
@@ -255,45 +226,60 @@ public class MainActivity extends Activity {
             if (pictureFile == null) {
                 return;
             }
-            if (isStatic){
-                //Static Section
-                try {
-                    FileOutputStream fos = new FileOutputStream(pictureFile);
-                    fos.write(data);
-                    fos.close();
+            try {
+                FileOutputStream fos = new FileOutputStream(pictureFile);
+                fos.write(data);
+                fos.close();
 
-                    //refresh gallery
-                    refreshGallery(pictureFile);
+                //refresh gallery
+                refreshGallery(pictureFile);
 
-                    //reset camera
-                    resetCam();
+                //reset camera
+                resetCam();
 
-                    //convert image file to bitmap
-                    Bitmap bmp = BitmapFactory.decodeFile(String.valueOf(pictureFile));
-                    String detail = classifier.predict(bmp);
-                    cameraList.add(0, new CameraItem(bmp, detail));
-                    cameraAdapter.notifyDataSetChanged();
-
-                    TextView txt=(TextView)findViewById(R.id.txtOverSv);
-                    txt.setText(detail);
-                    ((ViewGroup)txt.getParent()).removeView(txt);
-                    preview.addView(txt);
-                } catch (FileNotFoundException e) {
-
-                } catch (IOException e) {
-                }
-                isStatic = false;
-            } else {
-                // AR section
                 //convert image file to bitmap
-
-                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length, null);
+                Bitmap bmp = BitmapFactory.decodeFile(String.valueOf(pictureFile));
                 String detail = classifier.predict(bmp);
+                cameraList.add(0, new CameraItem(bmp, detail));
+                cameraAdapter.notifyDataSetChanged();
 
                 TextView txt=(TextView)findViewById(R.id.txtOverSv);
                 txt.setText(detail);
                 ((ViewGroup)txt.getParent()).removeView(txt);
                 preview.addView(txt);
+
+                //Set image view
+                //ImageView imageView = findViewById(R.id.imageTest);
+                //imageView.setImageBitmap(bmp);
+                //correct the image orientation
+                //imageView.setRotation(90);
+
+                //get image from the view
+                //Bitmap bmRotated = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+
+                //pass the rotated bitmap to the classifier to get predicted
+                //String pred = classifier.predict(bmRotated);
+
+                //Set text view
+                //TextView tvPred = findViewById(R.id.predicted);
+                //tvPred.setText(pred);
+
+                //sent to arraylist in listview
+                //create click event listen on list item and send data to results intent
+
+                //IDEA FOR FINAL ITERATION OF THE CODE
+                //   ArrayList<CameraItem> cameraList = new ArrayList<>();
+                //For loop
+
+                //   cameraList.add(new cameraItem(Bitmap, Label));
+
+                //   CameraAdapter = new CameraAdapter(this, cameraList);
+                //   listView.setAdapter(CameraAdapter);
+
+
+            } catch (FileNotFoundException e) {
+
+            } catch (IOException e) {
             }
         }
     };
@@ -355,110 +341,82 @@ public class MainActivity extends Activity {
     }
 
 
+
     @Override
     protected void onDestroy() {
+        isRunning = false;
         handler.removeCallbacks(runnable);
         super.onDestroy();
     }
-
-    private void checkAndroidVersion() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkAndRequestPermissions();
-
-        } else {
-            // code for lollipop and pre-lollipop devices
-        }
-
-    }
-
-
-    private boolean checkAndRequestPermissions() {
-        int camera = ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.CAMERA);
-        int wtite = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int read = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        List<String> listPermissionsNeeded = new ArrayList<>();
-        if (wtite != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-        if (camera != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.CAMERA);
-        }
-        if (read != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-        }
-        if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(MainActivity.this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
-            return false;
-        }
-        return true;
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        Log.d("in fragment on request", "Permission callback called-------");
-        switch (requestCode) {
-            case REQUEST_ID_MULTIPLE_PERMISSIONS: {
-
-                Map<String, Integer> perms = new HashMap<>();
-                // Initialize the map with both permissions
-                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-                perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
-                perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-                // Fill with actual results from user
-                if (grantResults.length > 0) {
-                    for (int i = 0; i < permissions.length; i++)
-                        perms.put(permissions[i], grantResults[i]);
-                    // Check for both permissions
-                    if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                            && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                        initializeUiandCamera();
-                        Log.d("in fragment on request", "CAMERA & WRITE_EXTERNAL_STORAGE READ_EXTERNAL_STORAGE permission granted");
-                        // process the normal flow
-                        //else any one or both the permissions are not granted
-                    } else {
-                        Log.d("in fragment on request", "Some permissions are not granted ask again ");
-                        //permission is denied (this is the first time, when "never ask again" is not checked) so ask again explaining the usage of permission
-//                        // shouldShowRequestPermissionRationale will return true
-                        //show the dialog or snackbar saying its necessary and try again otherwise proceed with setup.
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.CAMERA) || ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                            showDialogOK("Camera and Storage Permission required for this app",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            switch (which) {
-                                                case DialogInterface.BUTTON_POSITIVE:
-                                                    checkAndRequestPermissions();
-                                                    break;
-                                                case DialogInterface.BUTTON_NEGATIVE:
-                                                    // proceed with logic by disabling the related features or quit the app.
-                                                    break;
-                                            }
-                                        }
-                                    });
-                        }
-                        //permission is denied (and never ask again is  checked)
-                        //shouldShowRequestPermissionRationale will return false
-                        else {
-                            Toast.makeText(MainActivity.this, "Go to settings and enable permissions", Toast.LENGTH_LONG)
-                                    .show();
-                            //                            //proceed with logic by disabling the related features or quit the app.
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-
-    private void showDialogOK(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(MainActivity.this)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", okListener)
-                .create()
-                .show();
-    }
 }
+
+
+//import android.content.Intent;
+//import android.graphics.Bitmap;
+//import android.os.Bundle;
+//import android.provider.MediaStore;
+//import androidx.appcompat.app.AppCompatActivity;
+//import androidx.appcompat.widget.Toolbar;
+//import android.util.Log;
+//import android.view.View;
+//import android.widget.Button;
+//import java.io.File;
+//
+//
+//
+//public class MainActivity extends AppCompatActivity {
+//
+//    int cameraRequestCode = 001;
+//
+//    Classifier classifier;
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//
+//        classifier = new Classifier(Utils.assetFilePath(this,"resnet-v2.pt"));
+//
+//        Button capture = findViewById(R.id.capture);
+//
+//        capture.setOnClickListener(new View.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View view){
+//
+//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//
+//                startActivityForResult(cameraIntent,cameraRequestCode);
+//
+//            }
+//
+//
+//        });
+//
+//    }
+//
+//    @Override
+////    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+////
+////        super.onActivityResult(requestCode, resultCode, data);
+////        if (requestCode == cameraRequestCode && resultCode == RESULT_OK) {
+////
+////            Intent resultView = new Intent(this, Result.class);
+////
+////            resultView.putExtra("imagedata", data.getExtras());
+////
+////            Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+////
+////            String pred = classifier.predict(imageBitmap);
+//            resultView.putExtra("pred", pred);
+//
+//            startActivity(resultView);
+//
+//        }
+//
+//    }
+//
+//}
