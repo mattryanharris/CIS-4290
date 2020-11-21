@@ -176,7 +176,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
                 mCamera.setDisplayOrientation(180);
             }
 
-            mCamera.setParameters(parameters);
+            //mCamera.setParameters(parameters);
 //            Camera.Parameters parameters = mCamera.getParameters();
 //            parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
 //            requestLayout();
