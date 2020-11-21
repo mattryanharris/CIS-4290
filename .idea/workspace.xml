@@ -14,22 +14,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b94696f9-0e74-44b7-8c82-34821bae8551" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/boeing_logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/myrect.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/jarAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/pytorchandroid/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/pytorchandroid/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_result.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_result.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/array_items_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/array_items_list.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/content_result.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/content_result.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="34015bc2cd0a1645" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="3401f96abd0a163b" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -38,7 +49,12 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
-        <projects_view />
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
       </state>
     </system>
   </component>
@@ -77,8 +93,8 @@
     <property name="DEBUGGABLE_DEVICE" value="emulator-5554" />
     <property name="DEBUGGABLE_PROCESS" value="com.example.pytorchandroid" />
     <property name="DEBUGGER_ID" value="Auto" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="34015bc2cd0a1645" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-11-21T07:43:08.370Z" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="3401f96abd0a163b" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-11-21T08:10:41.908Z" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SHOW_ALL_PROCESSES" value="true" />
@@ -96,12 +112,12 @@
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="com.example.pytorchandroid" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
+      <recent name="C:\Users\chunj\Documents\GitHub\CIS-4290\app\src\main\res\font" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/src/main/assets" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\chunj\Documents\GitHub\CIS-4290\app\src\main\res\font" />
-      <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
     </key>
   </component>
   <component name="RunManager" selected="Android App.BoeingApp">
@@ -271,10 +287,11 @@
     </state>
     <state x="-1372" y="42" key="AndroidCreateResourceDirectoryDialog/-1920.-260.1920.1080/0.0.1536.960@-1920.-260.1920.1080" timestamp="1605774448563" />
     <state x="548" y="291" key="AndroidCreateResourceDirectoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605941900121" />
-    <state x="-1493" y="16" key="AndroidCreateResourceFileDialog" timestamp="1605775394094">
-      <screen x="-1920" y="-260" width="1920" height="1080" />
+    <state x="-1493" y="33" key="AndroidCreateResourceFileDialog" timestamp="1605949420514">
+      <screen x="-1920" y="-237" width="1920" height="1057" />
     </state>
     <state x="330" y="-787" key="AndroidCreateResourceFileDialog/-159.-1057.1920.1057/0.23.1680.977@-159.-1057.1920.1057" timestamp="1604440193651" />
+    <state x="-1493" y="33" key="AndroidCreateResourceFileDialog/-1920.-237.1920.1057/0.23.1536.937@-1920.-237.1920.1057" timestamp="1605949420514" />
     <state x="-1493" y="16" key="AndroidCreateResourceFileDialog/-1920.-260.1920.1080/0.0.1536.960@-1920.-260.1920.1080" timestamp="1605775394094" />
     <state x="428" y="271" key="AndroidCreateResourceFileDialog/-1920.23.1920.1057/0.23.1680.972@0.23.1680.972" timestamp="1602529218643" />
     <state x="367" y="233" key="AndroidCreateResourceFileDialog/0.23.1440.822@0.23.1440.822" timestamp="1602526014007" />
@@ -288,6 +305,10 @@
     </state>
     <state x="657" y="-771" key="AndroidProcessChooserDialog/-159.-1057.1920.1007/0.23.1680.1027@-159.-1057.1920.1007" timestamp="1604446665449" />
     <state x="657" y="-757" key="AndroidProcessChooserDialog/-159.-1057.1920.1057/0.23.1680.977@-159.-1057.1920.1057" timestamp="1604443197148" />
+    <state x="-1372" y="3" key="AndroidThemeDialog" timestamp="1605948527074">
+      <screen x="-1920" y="-237" width="1920" height="1057" />
+    </state>
+    <state x="-1372" y="3" key="AndroidThemeDialog/-1920.-237.1920.1057/0.23.1536.937@-1920.-237.1920.1057" timestamp="1605948527074" />
     <state x="-1514" y="-162" key="CommitChangelistDialog2" timestamp="1605777078614">
       <screen x="-1920" y="-260" width="1920" height="1080" />
     </state>
@@ -414,21 +435,23 @@
       <screen x="0" y="23" width="1680" height="972" />
     </state>
     <state x="427" y="259" key="IDE.errors.dialog/-1920.23.1920.1057/0.23.1680.972@0.23.1680.972" timestamp="1602540720253" />
-    <state x="-1045" y="-75" key="SettingsEditor" timestamp="1605773836973">
-      <screen x="-1920" y="-260" width="1920" height="1080" />
+    <state x="-1045" y="-56" key="SettingsEditor" timestamp="1605945264586">
+      <screen x="-1920" y="-237" width="1920" height="1057" />
     </state>
+    <state x="-1045" y="-56" key="SettingsEditor/-1920.-237.1920.1057/0.23.1536.937@-1920.-237.1920.1057" timestamp="1605945264586" />
     <state x="-1045" y="-75" key="SettingsEditor/-1920.-260.1920.1080/0.0.1536.960@-1920.-260.1920.1080" timestamp="1605773836973" />
     <state x="1167" y="241" key="SettingsEditor/2560.-174.1920.1050/-1080.-174.1080.1890/0.0.2560.1410@0.0.2560.1410" timestamp="1605411033886" />
     <state x="439" y="249" key="Vcs.Push.Dialog.v2" timestamp="1601919959755">
       <screen x="0" y="23" width="1680" height="972" />
     </state>
     <state x="439" y="249" key="Vcs.Push.Dialog.v2/-1920.23.1920.1057/0.23.1680.972@0.23.1680.972" timestamp="1601919959755" />
-    <state x="-1819" y="-154" width="1229" height="868" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1605824820611">
-      <screen x="-1920" y="-260" width="1920" height="1080" />
+    <state x="-1819" y="-133" width="1229" height="850" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1605945273168">
+      <screen x="-1920" y="-237" width="1920" height="1057" />
     </state>
     <state x="-36" y="-957" width="1228" height="807" key="com.android.tools.idea.avdmanager.AvdListDialog/-136.-1057.1920.1007/0.23.1680.1027@-136.-1057.1920.1007" timestamp="1604957959390" />
     <state x="-35" y="-953" width="1229" height="849" key="com.android.tools.idea.avdmanager.AvdListDialog/-136.-1057.1920.1057/0.23.1680.977@-136.-1057.1920.1057" timestamp="1605772743256" />
     <state x="88" y="120" width="1075" height="784" key="com.android.tools.idea.avdmanager.AvdListDialog/-136.-1057.1920.1057/0.23.1680.977@0.23.1680.977" timestamp="1604983705732" />
+    <state x="-1819" y="-133" width="1229" height="850" key="com.android.tools.idea.avdmanager.AvdListDialog/-1920.-237.1920.1057/0.23.1536.937@-1920.-237.1920.1057" timestamp="1605945273168" />
     <state x="-1819" y="-154" width="1229" height="868" key="com.android.tools.idea.avdmanager.AvdListDialog/-1920.-260.1920.1080/0.0.1536.960@-1920.-260.1920.1080" timestamp="1605824820611" />
     <state x="101" y="103" width="1229" height="835" key="com.android.tools.idea.avdmanager.AvdListDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605292110260" />
     <state x="75" y="105" width="921" height="663" key="com.android.tools.idea.avdmanager.AvdListDialog/0.23.1440.827@0.23.1440.827" timestamp="1604962083418" />
@@ -451,9 +474,17 @@
       <screen x="-136" y="-1057" width="1920" height="1057" />
     </state>
     <state x="511" y="-832" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/-136.-1057.1920.1057/0.23.1680.977@-136.-1057.1920.1057" timestamp="1604680184854" />
+    <state x="-1180" y="215" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605945219742">
+      <screen x="-1920" y="-237" width="1920" height="1057" />
+    </state>
+    <state x="-1180" y="215" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/-1920.-237.1920.1057/0.23.1536.937@-1920.-237.1920.1057" timestamp="1605945219742" />
     <state x="936" y="333" key="run.anything.popup" timestamp="1605408812382">
       <screen x="0" y="0" width="2560" height="1410" />
     </state>
     <state x="936" y="333" key="run.anything.popup/2560.-174.1920.1050/-1080.-174.1080.1890/0.0.2560.1410@0.0.2560.1410" timestamp="1605408812382" />
+    <state x="-1295" y="-2" width="670" height="676" key="search.everywhere.popup" timestamp="1605948147824">
+      <screen x="-1920" y="-237" width="1920" height="1057" />
+    </state>
+    <state x="-1295" y="-2" width="670" height="676" key="search.everywhere.popup/-1920.-237.1920.1057/0.23.1536.937@-1920.-237.1920.1057" timestamp="1605948147824" />
   </component>
 </project>
