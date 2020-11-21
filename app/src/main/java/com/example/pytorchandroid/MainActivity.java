@@ -71,7 +71,7 @@ public class MainActivity extends Activity {
     private RecyclerView recyclerView;
     Bitmap bmp;
     String detail;
-    private boolean isStatic;
+    private boolean isRunning;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS= 7;
 
     @Override
@@ -134,30 +134,17 @@ public class MainActivity extends Activity {
         }
         preview.setKeepScreenOn(true);
 
-        // Initiate isStatic as false
-        isStatic = false;
-        //Runs the loop
         runnable = new Runnable() {
+
             @Override
             public void run() {
                 camera.takePicture(shutterCallback, rawCallback, mPicture);
-                handler.postDelayed(this, 4000);
+                handler.postDelayed(this, 2000);
             }
         };
 
-        handler.post(runnable);
-
-        //Enables and starts the Static portion of the camera
-        preview.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                isStatic = true;
-                camera.takePicture(shutterCallback, rawCallback, mPicture);
-            }
-        });
-
         //initial state should be false
-        /*isRunning = false;
+        isRunning = false;
         preview.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -173,13 +160,12 @@ public class MainActivity extends Activity {
             }
         });
 
-         */
-
         cameraAdapter.setOnItemClickListener(new CameraAdapter.OnClickListener() {
             @Override
             public void onClick(String text, int position) {
-
+                isRunning = false;
                 handler.removeCallbacks(runnable);
+
                 Intent resultView = new Intent(MainActivity.this, Result.class);
 
                 resultView.putExtra("imagedata", position);
@@ -196,7 +182,6 @@ public class MainActivity extends Activity {
         super.onResume();
         int numCams = Camera.getNumberOfCameras();
         TextView txt=(TextView)findViewById(R.id.txtOverSv);
-
         txt.setText("");
         if(numCams > 0){
             try{
@@ -208,14 +193,10 @@ public class MainActivity extends Activity {
                 Toast.makeText(ctx, getString(R.string.camera_not_found), Toast.LENGTH_LONG).show();
             }
         }
-        handler.post(runnable);
     }
 
     @Override
     protected void onPause() {
-
-        handler.removeCallbacks(runnable);
-
         if(camera != null) {
             camera.stopPreview();
             preview.setCamera(null);
@@ -255,45 +236,30 @@ public class MainActivity extends Activity {
             if (pictureFile == null) {
                 return;
             }
-            if (isStatic){
-                //Static Section
-                try {
-                    FileOutputStream fos = new FileOutputStream(pictureFile);
-                    fos.write(data);
-                    fos.close();
+            try {
+                FileOutputStream fos = new FileOutputStream(pictureFile);
+                fos.write(data);
+                fos.close();
 
-                    //refresh gallery
-                    refreshGallery(pictureFile);
+                //refresh gallery
+                refreshGallery(pictureFile);
 
-                    //reset camera
-                    resetCam();
+                //reset camera
+                resetCam();
 
-                    //convert image file to bitmap
-                    Bitmap bmp = BitmapFactory.decodeFile(String.valueOf(pictureFile));
-                    String detail = classifier.predict(bmp);
-                    cameraList.add(0, new CameraItem(bmp, detail));
-                    cameraAdapter.notifyDataSetChanged();
-
-                    TextView txt=(TextView)findViewById(R.id.txtOverSv);
-                    txt.setText(detail);
-                    ((ViewGroup)txt.getParent()).removeView(txt);
-                    preview.addView(txt);
-                } catch (FileNotFoundException e) {
-
-                } catch (IOException e) {
-                }
-                isStatic = false;
-            } else {
-                // AR section
                 //convert image file to bitmap
-
-                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length, null);
+                Bitmap bmp = BitmapFactory.decodeFile(String.valueOf(pictureFile));
                 String detail = classifier.predict(bmp);
+                cameraList.add(0, new CameraItem(bmp, detail));
+                cameraAdapter.notifyDataSetChanged();
 
                 TextView txt=(TextView)findViewById(R.id.txtOverSv);
                 txt.setText(detail);
                 ((ViewGroup)txt.getParent()).removeView(txt);
                 preview.addView(txt);
+            } catch (FileNotFoundException e) {
+
+            } catch (IOException e) {
             }
         }
     };
@@ -355,8 +321,10 @@ public class MainActivity extends Activity {
     }
 
 
+
     @Override
     protected void onDestroy() {
+        isRunning = false;
         handler.removeCallbacks(runnable);
         super.onDestroy();
     }
