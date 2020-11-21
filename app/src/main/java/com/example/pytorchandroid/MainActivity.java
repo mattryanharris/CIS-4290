@@ -42,9 +42,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
     Preview preview;
@@ -58,7 +55,7 @@ public class MainActivity extends Activity {
     //Set up Camera variables
     private ArrayList<CameraItem> cameraList = new ArrayList<CameraItem>();
     private CameraAdapter cameraAdapter;
-    private RecyclerView recyclerView;
+    private ListView listView;
     Bitmap bmp;
     String detail;
     private boolean isRunning;
@@ -76,9 +73,7 @@ public class MainActivity extends Activity {
         classifier = new Classifier(Utils.assetFilePath(this,"resnet-sm11-4-20.pt"));
 
         // Set up ListView and ArrayList
-        recyclerView = (RecyclerView) findViewById(R.id.camera_list);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+        listView = (ListView) findViewById(R.id.camera_list);
         ArrayList<String> filePaths = new ArrayList<String>();
         filePaths = getFilePaths();
 
@@ -103,7 +98,7 @@ public class MainActivity extends Activity {
 
         //Now enter the ArrayList into the Adapter
         cameraAdapter = new CameraAdapter(this, cameraList);
-        recyclerView.setAdapter(cameraAdapter);
+        listView.setAdapter(cameraAdapter);
 
         preview = new Preview(this, (SurfaceView)findViewById(R.id.surfaceView));
         preview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -147,11 +142,13 @@ public class MainActivity extends Activity {
             }
         });
 
-        cameraAdapter.setOnItemClickListener(new CameraAdapter.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(String text, int position) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 isRunning = false;
                 handler.removeCallbacks(runnable);
+                ImageView imageview = (ImageView) view.findViewById(R.id.imageview_array);
+                TextView textTv = view.findViewById(R.id.textview_array);
 
 
                 //ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -162,7 +159,7 @@ public class MainActivity extends Activity {
                 Intent resultView = new Intent(MainActivity.this, Result.class);
 
                 resultView.putExtra("imagedata", position);
-                resultView.putExtra("pred", text);
+                resultView.putExtra("pred", textTv.getText().toString());
 
                 startActivity(resultView);
             }
