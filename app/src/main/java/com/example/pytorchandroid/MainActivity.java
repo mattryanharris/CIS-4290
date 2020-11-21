@@ -134,7 +134,6 @@ public class MainActivity extends Activity {
         }
         preview.setKeepScreenOn(true);
 
-        
         runnable = new Runnable() {
 
             @Override
