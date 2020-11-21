@@ -62,6 +62,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
         // We purposely disregard child measurements because act as a
         // wrapper to a SurfaceView that centers the camera preview instead
         // of stretching it.
+        //super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
         setMeasuredDimension(width, height);
@@ -69,6 +70,8 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
         if (mSupportedPreviewSizes != null) {
             mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
         }
+
+
     }
 
     @Override
@@ -153,6 +156,9 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
+        if (holder.getSurface() == null){
+            return;
+        }
         if(mCamera != null) {
 
             Camera.Parameters parameters = mCamera.getParameters();
@@ -176,13 +182,17 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
                 mCamera.setDisplayOrientation(180);
             }
 
-            mCamera.setParameters(parameters);
+            //mCamera.setParameters(parameters);
 //            Camera.Parameters parameters = mCamera.getParameters();
 //            parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
 //            requestLayout();
 //
 //            mCamera.setParameters(parameters);
-
+            try {
+                mCamera.setPreviewDisplay(holder);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             mCamera.startPreview();
         }
     }
