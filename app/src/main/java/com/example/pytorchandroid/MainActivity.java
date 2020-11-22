@@ -94,7 +94,6 @@ public class MainActivity extends Activity {
         }
 
         checkAndroidVersion();
-        initializeUiandCamera();
     }
 
 
@@ -158,7 +157,6 @@ public class MainActivity extends Activity {
             }
         };
 
-        handler.post(runnable);
 
         //Enables and starts the Static portion of the camera
         preview.setOnClickListener(new OnClickListener() {
@@ -215,8 +213,9 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onResume() {
-        handler.post(runnable);
         super.onResume();
+        initializeUiandCamera();
+        handler.post(runnable);
         int numCams = Camera.getNumberOfCameras();
         TextView txt=(TextView)findViewById(R.id.txtOverSv);
         txt.setText("");
