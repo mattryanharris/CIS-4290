@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: org.pytorch:pytorch_android_torchvision:1.6.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4358cafcd9b3a914cacf1438e4463d90/jetified-pytorch_android_torchvision-1.6.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4358cafcd9b3a914cacf1438e4463d90/jetified-pytorch_android_torchvision-1.6.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4358cafcd9b3a914cacf1438e4463d90/jetified-pytorch_android_torchvision-1.6.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c8a956f57e6a277ed392a3380cd84972/jetified-pytorch_android_torchvision-1.6.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c8a956f57e6a277ed392a3380cd84972/jetified-pytorch_android_torchvision-1.6.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c8a956f57e6a277ed392a3380cd84972/jetified-pytorch_android_torchvision-1.6.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pytorch/pytorch_android_torchvision/1.6.0/41044d3a5976e07c8ff5664fafe5ea2dacd971ce/pytorch_android_torchvision-1.6.0-javadoc.jar!/" />

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,15 +13,15 @@ import android.widget.TextView;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-public class CameraAdapter extends ArrayAdapter<CameraItem> {
+/*
+public class CameraAdapter extends RecyclerView<CameraItem> {
     private static final String TAG = "CameraAdapter";
     private Context cContext;
     private List<CameraItem> cameraItemList = new ArrayList<>();
-
     public CameraAdapter (@NonNull Context context, ArrayList<CameraItem> list) {
         super (context, 0, list);
         cContext = context;
@@ -54,5 +55,53 @@ public class CameraAdapter extends ArrayAdapter<CameraItem> {
 
         return view;
     }
+ */
 
-}
+    public class CameraAdapter extends RecyclerView.Adapter<CameraAdapter.ViewHolder> {
+        private List<CameraItem> list;
+        class ViewHolder extends RecyclerView.ViewHolder {
+            TextView details;
+            ImageView imageView;
+            ViewHolder(View view) {
+                super(view);
+                imageView = view.findViewById(R.id.imageview_array);
+                details = view.findViewById(R.id.textview_array);
+            }
+        }
+        public interface OnClickListener{
+            public void onClick(String text, int position);
+        }
+        public CameraAdapter(Context context, List<CameraItem> list) {
+            this.list = list;
+        }
+        OnClickListener listener;
+        public void setOnItemClickListener(OnClickListener listener){
+            this.listener = listener;
+        }
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.array_items_list, parent, false);
+            return new ViewHolder(itemView);
+        }
+        @Override
+        public void onBindViewHolder(ViewHolder holder, final int position) {
+            final CameraItem cameraItem = list.get(position);
+            holder.imageView.setImageBitmap(cameraItem.getCameraImage());
+            holder.imageView.setRotation(90);
+
+            holder.details.setText(cameraItem.getCameraClassified());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(cameraItem.getCameraClassified(), position);
+                }
+            });
+
+        }
+        @Override
+        public int getItemCount() {
+            return list.size();
+        }
+    }

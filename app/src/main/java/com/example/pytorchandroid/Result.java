@@ -3,6 +3,7 @@ package com.example.pytorchandroid;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,12 +21,16 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
+import static android.graphics.Color.*;
+
 public class Result extends AppCompatActivity {
 
     private Button share1;
+    private Button delete;
 
     private ArrayList<String> filePaths;
     private int position;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +53,33 @@ public class Result extends AppCompatActivity {
 
         final String pred = getIntent().getStringExtra("pred");
 
-        ImageView imageView = findViewById(R.id.image);
+        imageView = findViewById(R.id.image);
         imageView.setImageBitmap(bmp);
 
         imageView.setRotation(90);
-
         TextView textView = findViewById(R.id.label);
+        delete = findViewById(R.id.deleteButton);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                change();
+            }
+        });
+        String stringArray[] = pred.split(" ");
+        String confidence = stringArray[stringArray.length-1];
+
+
+        if (confidence.equals("(High)")) {
+            textView.setTextColor(Color.GREEN);
+        }
+        else if (confidence.equals("(Med)")){
+            textView.setTextColor(Color.BLUE);
+        }
+        else {
+            textView.setTextColor(Color.RED);
+        }
+
         textView.setText(pred);
-
-
         share1 = (Button)findViewById(R.id.share);
         share1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +101,12 @@ public class Result extends AppCompatActivity {
         });
 
     }
+    private void change(){
+        imageView.setImageBitmap(null);
+        Intent myIntent = new Intent(this, MainActivity.class);
+        startActivity(myIntent);
 
+    }
     private static ArrayList<String> getFilePaths(){
         ArrayList<String> filePaths = new ArrayList<String>();
 

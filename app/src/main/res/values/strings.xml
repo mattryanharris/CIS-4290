@@ -9,6 +9,6 @@
     <string name="btn_capture">Click</string>
 
     <!-- Toast Messages -->
-    <string name="camera_not_found">No camera harware found</string>
+    <string name="camera_not_found">No camera hardware found</string>
     <string name="take_photo_help">Touch anywhere on screen to take picture</string>
 </resources>
