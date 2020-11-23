@@ -317,7 +317,6 @@ public class MainActivity extends Activity {
                 txt.setText(detail);
                 ((ViewGroup)txt.getParent()).removeView(txt);
                 preview.addView(txt);
-                camera.release();
             }
         }
 
