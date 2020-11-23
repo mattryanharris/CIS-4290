@@ -136,6 +136,7 @@ public class MainActivity extends Activity {
         ((FrameLayout) findViewById(R.id.camera)).addView(preview);
 
         //add a textview to the surfaceview
+        /*
         if (!filePaths.isEmpty()) {
             final int truePosition = filePaths.size() - 1;
             Bitmap ARbmp = processFilePath(filePaths.get(truePosition));
@@ -145,12 +146,14 @@ public class MainActivity extends Activity {
             ((ViewGroup) txt.getParent()).removeView(txt);
             preview.addView(txt);
         }
+
+         */
         preview.setKeepScreenOn(true);
 
         // Initiate isStatic as false
         isStatic = false;
         //Runs the loop
-        /*
+
         runnable = new Runnable() {
             @Override
             public void run() {
@@ -159,7 +162,7 @@ public class MainActivity extends Activity {
             }
         };
 
-         */
+
 
 
         //Enables and starts the Static portion of the camera
@@ -233,7 +236,7 @@ public class MainActivity extends Activity {
 
         TextView txt=(TextView)findViewById(R.id.txtOverSv);
         txt.setText("");
-        //handler.post(runnable);
+        handler.post(runnable);
     }
 
     @Override
@@ -281,15 +284,13 @@ public class MainActivity extends Activity {
             if (isStatic){
                 //Static Section
                 try {
+
                     FileOutputStream fos = new FileOutputStream(pictureFile);
                     fos.write(data);
                     fos.close();
 
-                    //refresh gallery
-                    refreshGallery(pictureFile);
 
-                    //reset camera
-                    resetCam();
+
 
                     //convert image file to bitmap
                     Bitmap bmp = BitmapFactory.decodeFile(String.valueOf(pictureFile));
@@ -310,6 +311,7 @@ public class MainActivity extends Activity {
                 // AR section
                 //convert image file to bitmap
 
+
                 Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length, null);
                 String detail = classifier.predict(bmp);
 
@@ -318,6 +320,11 @@ public class MainActivity extends Activity {
                 ((ViewGroup)txt.getParent()).removeView(txt);
                 preview.addView(txt);
             }
+            refreshGallery(pictureFile);
+
+            //reset camera
+            resetCam();
+
         }
 
     };
