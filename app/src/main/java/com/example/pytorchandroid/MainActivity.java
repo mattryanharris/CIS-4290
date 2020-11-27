@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        File dir = new File(
+        /*File dir = new File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyCameraApp");
         if (dir.isDirectory())
         {
@@ -93,6 +93,8 @@ public class MainActivity extends Activity {
                 new File(dir, children[i]).delete();
             }
         }
+
+         */
 
 
         checkAndroidVersion();
