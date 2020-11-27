@@ -26,12 +26,29 @@
 <!--</androidx.coordinatorlayout.widget.CoordinatorLayout>-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:visibility="visible">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40pt"
+        android:background="@color/colorBoeing"
+        android:id="@+id/banner"
+        android:orientation="horizontal">
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="30dp"
+          android:layout_gravity="center"
+          android:src="@drawable/boeing_logo"
+          ></ImageView>
 
+    </LinearLayout>
     <FrameLayout
         android:id="@+id/camera"
         android:layout_width="match_parent"
-        android:layout_height="450dp">
+        android:layout_height="530dp"
+        android:layout_below="@id/banner"
+        >
 
         <TextView
             android:id="@+id/txtOverSv"
@@ -44,16 +61,22 @@
         <SurfaceView
             android:id="@+id/surfaceView"
             android:layout_width="match_parent"
-            android:layout_height="450dp" />
+            android:layout_height="match_parent" />
 
     </FrameLayout>
     <!--This is the scroll view that will contain the list -->
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
+        android:layout_below="@+id/camera"
         android:fillViewport="true"
-        android:layout_below="@+id/camera">
+        android:paddingLeft="0dp"
+        android:paddingRight="10dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:gravity="left">
         <!--The ListView will be populated with the array content -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/camera_list"
