@@ -95,8 +95,6 @@ public class Result extends AppCompatActivity {
                 sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
 
-
-
             }
         });
 
