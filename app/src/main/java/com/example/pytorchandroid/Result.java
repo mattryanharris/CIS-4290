@@ -62,7 +62,7 @@ public class Result extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                change();
+                change(truePosition);
             }
         });
         String stringArray[] = pred.split(" ");
@@ -101,8 +101,15 @@ public class Result extends AppCompatActivity {
         });
 
     }
-    private void change(){
+    private void change(int position){
         imageView.setImageBitmap(null);
+        File dir = new File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyCameraApp");
+        if (dir.isDirectory())
+        {
+            String[] children = dir.list();
+            new File(dir, children[position]).delete();
+        }
         Intent myIntent = new Intent(this, MainActivity.class);
         startActivity(myIntent);
 
